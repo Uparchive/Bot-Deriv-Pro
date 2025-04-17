@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bot Deriv Pro — Progresso Diário</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header>
+    <h1>Bot Deriv Pro — Progresso Diário</h1>
+  </header>
+
+  <nav class="search-bar">
+    <input type="text" id="search-input" placeholder="🔍 Buscar por título..." aria-label="Buscar por título"/>
+    <input type="date" id="date-input" aria-label="Filtrar por data"/>
+    <button id="clear-search" aria-label="Limpar filtros">✖️</button>
+  </nav>
+
+  <main class="container">
+    <p id="no-results" class="no-results" hidden>Nenhum vídeo encontrado.</p>
+
+    <!-- Exemplo de seção; duplique para cada data -->
+    <section class="video-section" data-date="2024-04-16">
+      <header class="video-section-header">
+        <button class="toggle-btn" aria-expanded="false">▼</button>
+        <h2>16/04/2024 — Progresso do Robô</h2>
+      </header>
+      <ul class="video-list">
+        <li class="video-item" data-title="Vídeo 1">
+          <header class="video-item-header">
+            <button class="item-toggle-btn" aria-expanded="false">▼</button>
+            <h3>Título do Vídeo 1</h3>
+          </header>
+          <div class="video-item-content">
+            <iframe src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Farmazene-acd30.appspot.com%2Fo%2Fuploads%252Fz0wQUWxFhKRBeMLIHIjOHd1dpHn2%252F%2540CinePlay%2520-%2520O%2520Vidente%2520(2007).mp4%3Falt%3Dmedia%26token%3D978471ea-70da-42bd-8aac-129c517c63a3" allowfullscreen></iframe>
+            <p class="video-description">Análise de estabilidade e desempenho do robô.</p>
+          </div>
+        </li>
+        <li class="video-item" data-title="Vídeo 2">
+          <header class="video-item-header">
+            <button class="item-toggle-btn" aria-expanded="false">▼</button>
+            <h3>Título do Vídeo 2</h3>
+          </header>
+          <div class="video-item-content">
+            <iframe src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Farmazene-acd30.appspot.com%2Fo%2Fuploads%252Fz0wQUWxFhKRBeMLIHIjOHd1dpHn2%252F1729977210830_%2540CinePlay%2520-%2520Roubo%2520Nas%2520Alturas%2520(2011)%2520-%2520BDRip%2520720p%2520-%2520Dublado.mp4%3Falt%3Dmedia%26token%3D30489c6a-a3fa-4b1a-bbf0-422f271099b5" allowfullscreen></iframe>
+            <p class="video-description">Comparação de estratégias de operação.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <!-- Fim do exemplo -->
+
+  </main>
+
+  <button id="back-to-top" aria-label="Voltar ao topo">↑</button>
+
+  <footer>
+    &copy; 2025 Bot Deriv Pro — Desenvolvido por Kell Shalom
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
