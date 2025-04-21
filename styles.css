@@ -13,15 +13,9 @@
   padding: 0;
 }
 
-/* Corpo */
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* Header */
+/* Header — agora estica 100% */
 header {
+  width: 100%;
   background: var(--card);
   padding: 1rem;
   text-align: center;
@@ -32,17 +26,27 @@ header h1 {
   font-size: 1.75rem;
 }
 
-/* Barra de filtro */
+/* Nav (search-bar) — estica 100% e distribui o conteúdo */
 .search-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   background: var(--card);
-  box-shadow: 0 2px 4px var(--shadow);
+  width: 100%;
+  max-width: none;
+  justify-content: space-between; /* espaça igualmente os grupos */
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+/* Campos do filtro */
+.search-bar label {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: var(--fg);
 }
 .date-group,
 .search-bar select {
@@ -50,20 +54,13 @@ header h1 {
   display: flex;
   flex-direction: column;
 }
-.search-bar label {
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-  color: var(--fg);
-}
-.search-bar input[type="date"],
+.search-bar input,
 .search-bar select {
   padding: 0.5rem;
   border: 1px solid #555;
   border-radius: 4px;
   background: var(--card);
   color: var(--fg);
-  font-size: 1rem;
-  width: 100%;
 }
 .search-bar button {
   flex: 0 0 auto;
@@ -76,7 +73,12 @@ header h1 {
   color: var(--fg);
 }
 
-/* Container & mensagens */
+/* Container & conteúdo — sem alteração */
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Segoe UI', sans-serif;
+}
 .container {
   max-width: 800px;
   margin: 2rem auto;
@@ -84,53 +86,43 @@ header h1 {
 }
 .no-results {
   text-align: center;
-  color: #aaa;
+  color: #c00;
   margin-bottom: 2rem;
 }
 
-/* Resumo de banca */
 .summary {
   background: var(--card);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   text-align: center;
-  font-size: 1rem;
-  line-height: 1.5;
 }
-.profit-positive {
-  color: #4CAF50;
-  font-weight: bold;
+.profit-positive { color: #4CAF50; font-weight: bold; }
+.profit-negative { color: #F44336; font-weight: bold; }
+
+/* badge “NOVO” */
+.video-item.new-badge .video-item-header {
+  background: rgba(255,255,0,0.1);
 }
-.profit-negative {
-  color: #F44336;
+.video-item.new-badge .video-item-header h3::after {
+  content: ' NOVO';
+  background: yellow;
+  color: black;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
   font-weight: bold;
 }
 
-/* ícone de informação & conversão */
-.info-icon {
-  margin-left: 0.25rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-.info-icon,
-.info-icon:link,
-.info-icon:visited {
-  color: var(--primary);
-  text-decoration: none;
-}
-.info-icon:hover {
-  text-decoration: underline;
-}
-
-/* Seções */
 .video-section {
   margin-bottom: 2rem;
   border: 1px solid #333;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 6px var(--shadow);
 }
+.video-section[style*="display: none"] { display: none; }
+
 .video-section-header {
   display: flex;
   align-items: center;
@@ -138,23 +130,18 @@ header h1 {
   background: var(--card);
   cursor: pointer;
 }
-.video-section-header h2 {
-  flex: 1;
-  font-size: 1.25rem;
-}
 .toggle-btn {
   background: transparent;
   border: none;
   color: var(--primary);
   font-size: 1.25rem;
   margin-right: 0.5rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 .video-section.open .toggle-btn {
   transform: rotate(180deg);
 }
 
-/* Lista de vídeos */
 .video-list {
   display: none;
   background: var(--card);
@@ -166,27 +153,14 @@ header h1 {
   display: block;
 }
 
-/* Item de vídeo */
 .video-item {
   border-top: 1px solid #333;
   padding: 1rem 0;
 }
-.video-item:first-of-type {
+.video-item:first-child {
   border-top: none;
 }
-.video-item.new-badge .video-item-header {
-  background: rgba(255,255,0,0.1);
-}
-.video-item.new-badge .video-item-header h3::after {
-  content: ' NOVO';
-  background: yellow;
-  color: black;
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-weight: bold;
-}
+.video-item[style*="display: none"] { display: none; }
 
 .video-item-header {
   display: flex;
@@ -199,13 +173,12 @@ header h1 {
   color: var(--primary);
   font-size: 1rem;
   margin-right: 0.5rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 .video-item.open .item-toggle-btn {
   transform: rotate(180deg);
 }
 
-/* Conteúdo do vídeo */
 .video-item-content {
   display: none;
   padding: 0.75rem 0;
@@ -228,19 +201,8 @@ header h1 {
   font-size: 0.9rem;
   text-align: center;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 1rem;
-  color: #777;
-  font-size: 0.85rem;
-}
-
-/* Back to top */
 #back-to-top {
   position: fixed;
   bottom: 30px;
@@ -253,8 +215,14 @@ footer {
   border-radius: 50%;
   font-size: 1.25rem;
   cursor: pointer;
-  box-shadow: 0 2px 4px var(--shadow);
 }
 #back-to-top.show {
   display: block;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: #777;
+  font-size: 0.85rem;
 }
