@@ -1,4 +1,43 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
+  // === CONFIGURAÇÃO DE VISIBILIDADE E CONTAGEM REGRESSIVA DO BOTÃO ===
+  const buyBtn   = document.getElementById('buy-bot');
+  // janela ativa: de 2025‑04‑21 01:00 até 2025‑04‑21 02:50 (horário local)
+  const startAt  = new Date('2025-04-21T01:00:00').getTime();
+  const endAt    = new Date('2025-04-21T01:00:00').getTime();
+  let countdownInterval;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateBuyBtn() {
+    const now = Date.now();
+    if (now < startAt || now > endAt) {
+      // fora do período: esconde e cancela contador
+      buyBtn.style.display = 'none';
+      clearInterval(countdownInterval);
+      return;
+    }
+    // dentro do período: mostra e atualiza texto com hh:mm:ss restantes
+    buyBtn.style.display = '';
+    const remaining = endAt - now;
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    buyBtn.textContent = `Comprar Bot Deriv Pro V17 (${pad(h)}:${pad(m)}:${pad(s)})`;
+  }
+
+  // inicia contador
+  updateBuyBtn();
+  countdownInterval = setInterval(updateBuyBtn, 1000);
+
+  // lógica de compra
+  function comprarBot() {
+    window.open('', '_blank');
+  }
+  window.comprarBot = comprarBot; // expõe globalmente
+
+  // === DEMais funcionalidades existentes ===
   const MIN_DATE = '2025-04-20';
   const startInput    = document.getElementById('start-date');
   const endInput      = document.getElementById('end-date');
@@ -8,28 +47,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const summary       = document.getElementById('summary');
   const sections      = Array.from(document.querySelectorAll('.video-section'));
 
-  // Garante data mínima
-  function clampDate(v) {
-    return v && v < MIN_DATE ? MIN_DATE : v || null;
+  function clampDate(value) {
+    return value && value < MIN_DATE ? MIN_DATE : value || null;
   }
 
-  // Formata valor em USD
-  function formatUSD(v) {
-    return v.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  function formatUSD(number) {
+    return number.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
   }
 
-  // Marca badge “NOVO” no(s) item(s) da data mais recente
   function markNewBadges() {
     document.querySelectorAll('.video-item.new-badge')
       .forEach(el => el.classList.remove('new-badge'));
 
-    const items = Array.from(document.querySelectorAll('.video-item'))
+    const visibleItems = Array.from(document.querySelectorAll('.video-item'))
       .filter(li => li.style.display !== 'none');
-    if (!items.length) return;
+    if (!visibleItems.length) return;
 
-    const maxDate = items.map(li => li.dataset.date).sort().pop();
-    items.filter(li => li.dataset.date === maxDate)
-         .forEach(li => li.classList.add('new-badge'));
+    const latestDate = visibleItems
+      .map(li => li.dataset.date)
+      .sort()
+      .pop();
+
+    visibleItems
+      .filter(li => li.dataset.date === latestDate)
+      .forEach(li => li.classList.add('new-badge'));
   }
 
   function filterVideos() {
@@ -39,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let anyVisible = false;
     const banks = [];
 
-    // Filtra e coleta todos os bancos
     sections.forEach(sec => {
       const type = sec.dataset.type;
       let sectionHas = false;
@@ -56,14 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
           anyVisible = true;
           sectionHas = true;
           const txt = li.querySelector('.video-description').textContent;
-          const m = txt.match(
+          const match = txt.match(
             /inicial\s+de\s+\$([\d\.]+).*finalizamos\s+com\s+\$([\d\.]+)/i
           );
-          if (m) banks.push({
-            date:  date,
-            start: parseFloat(m[1]),
-            end:   parseFloat(m[2])
-          });
+          if (match) {
+            banks.push({
+              date:  li.dataset.date,
+              start: parseFloat(match[1]),
+              end:   parseFloat(match[2])
+            });
+          }
         }
       });
 
@@ -73,23 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
     noResults.hidden = anyVisible;
 
     if (banks.length) {
-      // datas do período
       const dates   = banks.map(b => b.date);
-      const minDate = dates.reduce((a,b) => a < b ? a : b);
-      const maxDate = dates.reduce((a,b) => a > b ? a : b);
+      const minDate = dates.reduce((a, b) => a < b ? a : b);
+      const maxDate = dates.reduce((a, b) => a > b ? a : b);
 
-      // menor start do dia mais antigo
-      const ini = Math.min(...banks
-        .filter(b => b.date === minDate)
-        .map(b => b.start));
+      const ini = Math.min(
+        ...banks.filter(b => b.date === minDate).map(b => b.start)
+      );
+      const lucro = banks.reduce((sum, b) => sum + (b.end - b.start), 0);
+      const fim   = ini + lucro;
 
-      // soma de todos os (end - start)
-      const lucro = banks.reduce((sum,b) => sum + (b.end - b.start), 0);
-
-      // saldo final = inicial + lucro
-      const fim = ini + lucro;
-
-      // conta wins e losses
       let wins = 0, losses = 0;
       banks.forEach(b => {
         const delta = b.end - b.start;
@@ -97,13 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (delta < 0) losses++;
       });
 
-      // formata data
       const fmtDate = iso => {
-        const [y,m,d] = iso.split('-');
+        const [y, m, d] = iso.split('-');
         return `${d}/${m}/${y}`;
       };
 
-      // monta painel
       summary.innerHTML = `
         <strong>Período:</strong> ${fmtDate(minDate)} até ${fmtDate(maxDate)}<br>
         <hr>
@@ -113,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="win-badge">Win: ${wins}</span>
         <span class="loss-badge">Loss: ${losses}</span><br>
         <strong>Lucro líquido:</strong>
-          <span class="${lucro>=0?'profit-positive':'profit-negative'}">
+          <span class="${lucro >= 0 ? 'profit-positive' : 'profit-negative'}">
             ${formatUSD(lucro)}
           </span>
       `;
@@ -125,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     markNewBadges();
   }
 
-  // Listeners
+  // Listeners para filtros e toggles
   [startInput, endInput].forEach(el =>
     el.addEventListener('change', filterVideos)
   );
@@ -152,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
 
-  // Roda filtro inicial e configura back-to-top
+  // Executa pela primeira vez
   filterVideos();
   const backBtn = document.getElementById('back-to-top');
   window.addEventListener('scroll', () =>

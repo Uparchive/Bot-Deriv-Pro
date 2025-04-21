@@ -222,6 +222,34 @@ body {
   max-width: 700px;
 }
 
+/* Botão “Comprar Bot” barra inferior full-width piscante */
+#buy-bot {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: #4CAF50; /* verde */
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+
+  /* animação de piscar */
+  animation: blink 1.5s infinite;
+}
+
+#buy-bot:hover {
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75%      { opacity: 0.3; }
+}
+
 /* Back to top */
 #back-to-top {
   position: fixed;
