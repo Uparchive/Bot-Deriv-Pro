@@ -13,7 +13,7 @@
   padding: 0;
 }
 
-/* Header — agora estica 100% */
+/* Header */
 header {
   width: 100%;
   background: var(--card);
@@ -26,7 +26,7 @@ header h1 {
   font-size: 1.75rem;
 }
 
-/* Nav (search-bar) — estica 100% e distribui o conteúdo */
+/* Nav (search-bar) */
 .search-bar {
   display: flex;
   flex-wrap: wrap;
@@ -34,15 +34,12 @@ header h1 {
   padding: 0.75rem 1rem;
   background: var(--card);
   width: 100%;
-  max-width: none;
-  justify-content: space-between; /* espaça igualmente os grupos */
+  justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 10;
 }
-
-/* Campos do filtro */
 .search-bar label {
   font-size: 0.85rem;
   margin-bottom: 0.25rem;
@@ -50,21 +47,22 @@ header h1 {
 }
 .date-group,
 .search-bar select {
-  flex: 1 1 0;
+  flex: 1 1 150px;
   display: flex;
   flex-direction: column;
 }
 .search-bar input,
 .search-bar select {
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: 1px solid #555;
   border-radius: 4px;
   background: var(--card);
   color: var(--fg);
+  font-size: 1.1rem;
 }
 .search-bar button {
   flex: 0 0 auto;
-  padding: 0 1rem;
+  padding: 0.75rem 1rem;
   font-size: 1.25rem;
   cursor: pointer;
   background: var(--card);
@@ -72,8 +70,18 @@ header h1 {
   border-radius: 4px;
   color: var(--fg);
 }
+@media (max-width: 600px) {
+  .search-bar {
+    flex-direction: column;
+  }
+  .date-group,
+  .search-bar select,
+  .search-bar button {
+    flex: 1 1 100%;
+  }
+}
 
-/* Container & conteúdo — sem alteração */
+/* Container & mensagens */
 body {
   background: var(--bg);
   color: var(--fg);
@@ -90,15 +98,25 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Resumo de banca */
 .summary {
   background: var(--card);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.summary hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 0.5rem 0;
 }
 .profit-positive { color: #4CAF50; font-weight: bold; }
 .profit-negative { color: #F44336; font-weight: bold; }
+.win-badge { color: #4CAF50; font-weight: bold; margin-right: 1rem; }
+.loss-badge { color: #F44336; font-weight: bold; }
 
 /* badge “NOVO” */
 .video-item.new-badge .video-item-header {
@@ -115,6 +133,7 @@ body {
   font-weight: bold;
 }
 
+/* Seções e vídeos */
 .video-section {
   margin-bottom: 2rem;
   border: 1px solid #333;
@@ -203,6 +222,7 @@ body {
   max-width: 700px;
 }
 
+/* Back to top */
 #back-to-top {
   position: fixed;
   bottom: 30px;
@@ -220,6 +240,7 @@ body {
   display: block;
 }
 
+/* Footer */
 footer {
   text-align: center;
   padding: 1rem;
