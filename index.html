@@ -12,38 +12,64 @@
   </header>
 
   <nav class="search-bar">
-    <input type="date" id="date-input" aria-label="Filtrar por data"/>
+    <div class="date-group">
+      <label for="start-date">Início do período:</label>
+      <input
+        type="date"
+        id="start-date"
+        aria-label="Data inicial"
+        min="2025-04-20"
+      />
+    </div>
+    <div class="date-group">
+      <label for="end-date">Fim do período:</label>
+      <input
+        type="date"
+        id="end-date"
+        aria-label="Data final"
+        min="2025-04-20"
+      />
+    </div>
+    <select id="account-filter" aria-label="Filtrar por tipo de conta">
+      <option value="">Todas as contas</option>
+      <option value="real">Conta Real</option>
+      <option value="demo">Conta Demo</option>
+    </select>
     <button id="clear-search" aria-label="Limpar filtros">✖️</button>
   </nav>
 
   <main class="container">
     <p id="no-results" class="no-results" hidden>Nenhum vídeo encontrado.</p>
+    <div id="summary" class="summary" hidden></div>
 
-    <!-- Seção de Banca REAL: data-date atualizada para 2025-04-20 -->
-    <section class="video-section" data-date="2025-04-20">
+    <!-- Seção de Banca REAL -->
+    <section class="video-section" data-date="2025-04-20" data-type="real">
       <header class="video-section-header">
         <button class="toggle-btn" aria-expanded="false">▼</button>
         <h2>Rodando o Robô em Banca Real</h2>
       </header>
       <ul class="video-list">
-        <!-- Se você tiver 3 vídeos neste dia, repita este <li> para cada um -->
         <li class="video-item">
           <header class="video-item-header">
             <button class="item-toggle-btn" aria-expanded="false">▼</button>
             <h3>(20/04/2025) - Operação Lucrativa</h3>
           </header>
           <div class="video-item-content">
-            <iframe src="https://www.youtube.com/embed/evi7DsthgW8?si=FqSdWwMTnb2a-yJ4" allowfullscreen></iframe>
+            <iframe
+              src="https://www.youtube.com/embed/evi7DsthgW8?si=FqSdWwMTnb2a-yJ4"
+              allowfullscreen
+            ></iframe>
             <p class="video-description">
               Começamos operando com a banca inicial de $21.34 e finalizamos com $23.24 com lucro líquido de $1.90
             </p>
           </div>
         </li>
+        <!-- Repita este <li> para cada vídeo de 20/04/2025 -->
       </ul>
     </section>
 
-    <!-- Seção de Banca DEMO: data-date atualizada para 2025-04-17 -->
-    <section class="video-section" data-date="2025-04-17">
+    <!-- Seção de Banca DEMO -->
+    <section class="video-section" data-date="2025-04-17" data-type="demo">
       <header class="video-section-header">
         <button class="toggle-btn" aria-expanded="false">▼</button>
         <h2>Rodando o Robô em Banca DEMO</h2>
@@ -55,21 +81,16 @@
             <h3>(17/04/2025) - Reajuste na nova versão do app</h3>
           </header>
           <div class="video-item-content">
-            <iframe src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=…Reajuste%20no%20Relatório%2017-04-2025.mp4" allowfullscreen></iframe>
-            <p class="video-description">Atualização da geração de relatórios em PDF</p>
+            <iframe
+              src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=…Reajuste%20no%20Relatório%2017-04-2025.mp4"
+              allowfullscreen
+            ></iframe>
+            <p class="video-description">
+              Atualização da geração de relatórios em PDF
+            </p>
           </div>
         </li>
-        <li class="video-item">
-          <header class="video-item-header">
-            <button class="item-toggle-btn" aria-expanded="false">▼</button>
-            <h3>(17/04/2025) - Nova atualização do Bot Deriv Pro!</h3>
-          </header>
-          <div class="video-item-content">
-            <iframe src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=…Atualização%20de%20Relatório%2017-04-2025.mp4" allowfullscreen></iframe>
-            <p class="video-description">Teste de nova versão do bot, Versão Relator V17-04-25</p>
-          </div>
-        </li>
-        <!-- etc… -->
+        <!-- Repita este <li> para cada vídeo de 17/04/2025 -->
       </ul>
     </section>
 
