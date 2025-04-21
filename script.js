@@ -1,33 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const MIN_DATE_ISO   = '2025-04-20';
-  const startInput     = document.getElementById('start-date');
-  const endInput       = document.getElementById('end-date');
-  const accountFilter  = document.getElementById('account-filter');
-  const clearBtn       = document.getElementById('clear-search');
-  const noResults      = document.getElementById('no-results');
-  const summaryDiv     = document.getElementById('summary');
-  const body           = document.body;
+  const MIN_DATE_ISO = '2025-04-20';
+
+  const startInput    = document.getElementById('start-date');
+  const endInput      = document.getElementById('end-date');
+  const accountFilter = document.getElementById('account-filter');
+  const clearBtn      = document.getElementById('clear-search');
+  const noResults     = document.getElementById('no-results');
+  const summaryDiv    = document.getElementById('summary');
+  const body          = document.body;
   let timer;
 
-  // Abre/fecha seções
-  document.querySelectorAll('.video-section-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const sec = h.closest('.video-section');
-      const open = sec.classList.toggle('open');
-      h.querySelector('.toggle-btn').setAttribute('aria-expanded', open);
-    });
-  });
+  // formatações de moeda
+  const fmtUsd = v =>
+    v.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-  // Abre/fecha vídeos
-  document.querySelectorAll('.video-item-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const it = h.closest('.video-item');
-      const open = it.classList.toggle('open');
-      h.querySelector('.item-toggle-btn').setAttribute('aria-expanded', open);
-    });
-  });
-
-  // Converte ISO ou dd/mm/aaaa → YYYY-MM-DD
+  // conversão de datas
   function parseToIso(raw) {
     if (!raw) return null;
     if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
@@ -49,43 +36,47 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${y}-${m}-${d}`;
   }
 
-  // Marca “NOVO” no primeiro vídeo da data mais recente visível
+  // marca o badge "NOVO" no primeiro item da data mais recente visível
   function markNewBadge() {
-    // Remove marcações antigas
     document.querySelectorAll('.video-item.new-badge')
       .forEach(el => el.classList.remove('new-badge'));
-
-    // Coleta seções visíveis
-    const visibleSecs = Array.from(
-      document.querySelectorAll('.video-section')
-    ).filter(sec => sec.style.display !== 'none');
-    if (!visibleSecs.length) return;
-
-    // Encontra data máxima
-    const maxIso = visibleSecs
-      .map(sec => sec.dataset.date)
-      .sort()
-      .pop();
-
-    // Seleciona a seção dessa data e marca o primeiro item
-    const secMax = visibleSecs.find(sec => sec.dataset.date === maxIso);
-    if (secMax) {
-      const firstItem = secMax.querySelector('.video-item');
-      if (firstItem) firstItem.classList.add('new-badge');
-    }
+    const secs = Array.from(document.querySelectorAll('.video-section'))
+      .filter(sec => sec.style.display !== 'none');
+    if (!secs.length) return;
+    const maxIso = secs.map(s => s.dataset.date).sort().pop();
+    const secMax = secs.find(s => s.dataset.date === maxIso);
+    if (!secMax) return;
+    const first = secMax.querySelector('.video-item');
+    if (first) first.classList.add('new-badge');
   }
 
-  // Filtra seções, calcula resumo e marca “NOVO”
+  // abre/fecha seções
+  document.querySelectorAll('.video-section-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const sec = h.closest('.video-section');
+      const open = sec.classList.toggle('open');
+      h.querySelector('.toggle-btn').setAttribute('aria-expanded', open);
+    });
+  });
+  // abre/fecha vídeos
+  document.querySelectorAll('.video-item-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const it = h.closest('.video-item');
+      const open = it.classList.toggle('open');
+      h.querySelector('.item-toggle-btn').setAttribute('aria-expanded', open);
+    });
+  });
+
+  // função principal de filtragem, resumo e badge
   function applyFilter() {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      const sIso    = clampIso(parseToIso(startInput.value));
-      const eIso    = clampIso(parseToIso(endInput.value));
-      const typeVal = accountFilter.value; // '' | 'real' | 'demo'
+      const sIso = clampIso(parseToIso(startInput.value));
+      const eIso = clampIso(parseToIso(endInput.value));
+      const tp   = accountFilter.value; // '' | 'real' | 'demo'
 
-      // Controla estilo de filtro ativo
-      if (sIso || eIso || typeVal) body.classList.add('filter-active');
-      else                          body.classList.remove('filter-active');
+      if (sIso || eIso || tp) body.classList.add('filter-active');
+      else                    body.classList.remove('filter-active');
 
       let anyVisible = false;
       const banks = [];
@@ -93,42 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.video-section').forEach(sec => {
         const iso  = sec.dataset.date;
         const type = sec.dataset.type;
-        let visible = true;
-        if (sIso && iso < sIso) visible = false;
-        if (eIso && iso > eIso) visible = false;
-        if (typeVal && type !== typeVal) visible = false;
-
-        sec.style.display = visible ? '' : 'none';
-        if (visible) {
+        let vis = true;
+        if (sIso && iso < sIso) vis = false;
+        if (eIso && iso > eIso) vis = false;
+        if (tp   && type !== tp) vis = false;
+        sec.style.display = vis ? '' : 'none';
+        if (vis) {
           anyVisible = true;
-          sec.querySelectorAll('.video-item').forEach(item => {
-            const txt = item.querySelector('.video-description').textContent;
-            const m = txt.match(
+          sec.querySelectorAll('.video-item').forEach(it => {
+            const txt = it.querySelector('.video-description').textContent;
+            const m   = txt.match(
               /banca\s+(?:inicial|iniciou)\s+de\s*\$?([\d.,]+).*(?:finalizamos|terminou)\s+com\s*\$?([\d.,]+)/i
             );
-            if (m) {
-              banks.push({
-                iso,
-                start: parseFloat(m[1].replace(',', '.')),
-                end:   parseFloat(m[2].replace(',', '.'))
-              });
-            }
+            if (m) banks.push({
+              iso,
+              start: parseFloat(m[1].replace(',', '.')),
+              end:   parseFloat(m[2].replace(',', '.'))
+            });
           });
         }
       });
 
       noResults.hidden = anyVisible;
 
-      // Monta resumo de banca
       if (banks.length) {
         banks.sort((a, b) => a.iso.localeCompare(b.iso));
-        const primeira = banks[0].start;
-        const ultima   = banks[banks.length - 1].end;
-        const lucro    = ultima - primeira;
+        const ini   = banks[0].start;
+        const fim   = banks[banks.length - 1].end;
+        const lucro = fim - ini;
 
-        const fmtCurr = v => v.toLocaleString('pt-BR', {
-          style: 'currency', currency: 'BRL'
-        });
         const fmtDate = iso => {
           const [y, m, d] = iso.split('-');
           return `${d}/${m}/${y}`;
@@ -140,23 +124,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         summaryDiv.innerHTML =
           `<strong>Período:</strong> ${periodo}<br>` +
-          `<strong>Banca inicial:</strong> ${fmtCurr(primeira)}<br>` +
-          `<strong>Banca final:</strong> ${fmtCurr(ultima)}<br>` +
-          `<strong>Lucro líquido:</strong> ` +
-          `<span class="${lucro >= 0 ? 'profit-positive' : 'profit-negative'}">` +
-            fmtCurr(lucro) +
-          `</span>`;
+
+          `<strong>Banca inicial (USD):</strong> ${fmtUsd(ini)} ` +
+          `<a class="info-icon" target="_blank" ` +
+            `href="https://www.xe.com/currencyconverter/convert/?Amount=${ini}&From=USD&To=BRL" ` +
+            `title="Converter USD → BRL no XE.com">?</a><br>` +
+
+          `<strong>Banca final (USD):</strong> ${fmtUsd(fim)} ` +
+          `<a class="info-icon" target="_blank" ` +
+            `href="https://www.xe.com/currencyconverter/convert/?Amount=${fim}&From=USD&To=BRL" ` +
+            `title="Converter USD → BRL no XE.com">?</a><br>` +
+
+          `<strong>Lucro líquido (USD):</strong> ` +
+            `<span class="${lucro >= 0 ? 'profit-positive' : 'profit-negative'}">` +
+              fmtUsd(lucro) +
+            `</span> ` +
+          `<a class="info-icon" target="_blank" ` +
+            `href="https://www.xe.com/currencyconverter/convert/?Amount=${lucro}&From=USD&To=BRL" ` +
+            `title="Converter USD → BRL no XE.com">?</a>`;
         summaryDiv.hidden = false;
       } else {
         summaryDiv.hidden = true;
       }
 
-      // Finalmente marca o vídeo “NOVO”
       markNewBadge();
     }, 200);
   }
 
-  // Inicialização padrão (20/04/2025 até hoje, conta real)
+  // init padrão
   (function initDefaults() {
     startInput.value    = MIN_DATE_ISO;
     endInput.value      = todayLocalIso();
@@ -164,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilter();
   })();
 
-  // Listeners
+  // listeners
   [startInput, endInput].forEach(el => {
     el.addEventListener('change', applyFilter);
     el.addEventListener('input', applyFilter);
@@ -177,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilter();
   });
 
-  // Back to top
+  // back to top
   const backBtn = document.getElementById('back-to-top');
   window.addEventListener('scroll', () =>
     backBtn.classList.toggle('show', window.scrollY > 200)

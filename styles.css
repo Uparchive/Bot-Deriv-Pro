@@ -13,6 +13,7 @@
   padding: 0;
 }
 
+/* Corpo */
 body {
   background: var(--bg);
   color: var(--fg);
@@ -106,6 +107,22 @@ header h1 {
   font-weight: bold;
 }
 
+/* ícone de informação & conversão */
+.info-icon {
+  margin-left: 0.25rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+.info-icon,
+.info-icon:link,
+.info-icon:visited {
+  color: var(--primary);
+  text-decoration: none;
+}
+.info-icon:hover {
+  text-decoration: underline;
+}
+
 /* Seções */
 .video-section {
   margin-bottom: 2rem;
@@ -157,6 +174,20 @@ header h1 {
 .video-item:first-of-type {
   border-top: none;
 }
+.video-item.new-badge .video-item-header {
+  background: rgba(255,255,0,0.1);
+}
+.video-item.new-badge .video-item-header h3::after {
+  content: ' NOVO';
+  background: yellow;
+  color: black;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
 .video-item-header {
   display: flex;
   align-items: center;
@@ -199,21 +230,6 @@ header h1 {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-}
-
-/* Badge “NOVO” inteligente */
-.video-item.new-badge .video-item-header {
-  background: rgba(255,255,0,0.1);
-}
-.video-item.new-badge .video-item-header h3::after {
-  content: ' NOVO';
-  background: yellow;
-  color: black;
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-weight: bold;
 }
 
 /* Footer */
