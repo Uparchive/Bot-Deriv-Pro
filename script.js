@@ -3,7 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // === CONFIGURAÇÃO DE VISIBILIDADE E CONTAGEM REGRESSIVA DO BOTÃO ===
   const buyBtn   = document.getElementById('buy-bot');
-  // janela ativa: de 2025‑04‑21 01:00 até 2025‑04‑21 02:50 (horário local)
   const startAt  = new Date('2025-04-21T01:00:00').getTime();
   const endAt    = new Date('2025-04-21T01:00:00').getTime();
   let countdownInterval;
@@ -13,31 +12,24 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateBuyBtn() {
     const now = Date.now();
     if (now < startAt || now > endAt) {
-      // fora do período: esconde e cancela contador
       buyBtn.style.display = 'none';
       clearInterval(countdownInterval);
       return;
     }
-    // dentro do período: mostra e atualiza texto com hh:mm:ss restantes
     buyBtn.style.display = '';
     const remaining = endAt - now;
     const h = Math.floor(remaining / 3600000);
     const m = Math.floor((remaining % 3600000) / 60000);
     const s = Math.floor((remaining % 60000) / 1000);
-    buyBtn.textContent = `Comprar Bot Deriv Pro V17 (${pad(h)}:${pad(m)}:${pad(s)})`;
+    buyBtn.textContent = `Comprar Bot Deriv Pro V17 (${pad(h)}:${pad(m)}:${pad(s)})`;
   }
 
-  // inicia contador
   updateBuyBtn();
   countdownInterval = setInterval(updateBuyBtn, 1000);
 
-  // lógica de compra
-  function comprarBot() {
-    window.open('', '_blank');
-  }
-  window.comprarBot = comprarBot; // expõe globalmente
+  window.comprarBot = () => window.open('', '_blank');
 
-  // === DEMais funcionalidades existentes ===
+  // === FILTRAGEM DE VÍDEOS ===
   const MIN_DATE = '2025-04-20';
   const startInput    = document.getElementById('start-date');
   const endInput      = document.getElementById('end-date');
@@ -79,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function filterVideos() {
     const start  = clampDate(startInput.value);
     const end    = clampDate(endInput.value);
-    const acc    = accountFilter.value; // '' | 'real' | 'demo'
+    const acc    = accountFilter.value;
     let anyVisible = false;
     const banks = [];
 
@@ -161,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     markNewBadges();
   }
 
-  // Listeners para filtros e toggles
   [startInput, endInput].forEach(el =>
     el.addEventListener('change', filterVideos)
   );
@@ -188,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
 
-  // Executa pela primeira vez
   filterVideos();
+
   const backBtn = document.getElementById('back-to-top');
   window.addEventListener('scroll', () =>
     backBtn.classList.toggle('show', window.scrollY > 200)

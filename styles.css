@@ -31,14 +31,11 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--card);
-  width: 100%;
+  padding: 0.5rem 1rem;
+  background: transparent;        /* fica transparente, sem “camada grossa” */
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  /* removido position: sticky/top/z-index para não poluir topo */
 }
 .search-bar label {
   font-size: 0.85rem;
@@ -236,15 +233,11 @@ body {
   border: none;
   cursor: pointer;
   z-index: 9999;
-
-  /* animação de piscar */
   animation: blink 1.5s infinite;
 }
-
 #buy-bot:hover {
   box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
 }
-
 @keyframes blink {
   0%, 50%, 100% { opacity: 1; }
   25%, 75%      { opacity: 0.3; }
