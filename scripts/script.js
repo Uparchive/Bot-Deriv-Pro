@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadNewsCards();
 });
 
-// Chat de Sugestões - EmailJS
+// Chat de Sugestões - Formspree
 (function() {
   const openBtn = document.getElementById('open-chat-btn');
   const closeBtn = document.getElementById('close-chat-btn');
@@ -245,16 +245,22 @@ document.addEventListener('DOMContentLoaded', () => {
   form.onsubmit = function(e) {
     e.preventDefault();
     status.textContent = 'Enviando...';
-    // Substitua pelos seus IDs do EmailJS:
-    emailjs.send('service_svqj01e', 'template_ndu28di', {
-      message: document.getElementById('chat-message').value,
-      email: document.getElementById('chat-email').value
-    }, 'PHQMkhPHUn4nfrTr4')
-    .then(function() {
-      status.textContent = 'Mensagem enviada com sucesso!';
-      form.reset();
-      setTimeout(() => modal.classList.remove('open'), 1500);
-    }, function(error) {
+    const formData = new FormData(form);
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        status.textContent = 'Sua Mensagem foi Enviada com Sucesso!';
+        form.reset();
+        setTimeout(() => modal.classList.remove('open'), 2000);
+      } else {
+        status.textContent = 'Erro ao enviar. Tente novamente.';
+      }
+    })
+    .catch(() => {
       status.textContent = 'Erro ao enviar. Tente novamente.';
     });
   };
