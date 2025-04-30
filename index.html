@@ -261,9 +261,9 @@
         <span>Sugestões & Dúvidas</span>
         <button id="close-chat-btn" aria-label="Fechar chat">×</button>
       </header>
-      <form id="suggestion-chat-form">
-        <textarea id="chat-message" placeholder="Digite sua sugestão ou dúvida..." required></textarea>
-        <input type="email" id="chat-email" placeholder="Seu e-mail (opcional)" />
+      <form id="suggestion-chat-form" action="https://formspree.io/f/xgvkoney" method="POST">
+        <textarea name="message" id="chat-message" placeholder="Digite sua sugestão ou dúvida..." required></textarea>
+        <input type="email" name="email" id="chat-email" placeholder="Seu e-mail (opcional)" />
         <button type="submit">Enviar</button>
         <div id="chat-status"></div>
       </form>
