@@ -254,5 +254,23 @@
   </footer>
 
   <script src="scripts/script.js" defer></script>
+
+  <!-- Chat de Sugestões (balão flutuante) -->
+<div id="suggestion-chat-bubble">
+  <button id="open-chat-btn" aria-label="Abrir chat de sugestões">💬</button>
+  <div id="suggestion-chat-modal" class="chat-modal">
+    <header class="chat-header">
+      <span>Sugestões & Dúvidas</span>
+      <button id="close-chat-btn" aria-label="Fechar chat">×</button>
+    </header>
+    <form id="suggestion-chat-form">
+      <textarea id="chat-message" placeholder="Digite sua sugestão ou dúvida..." required></textarea>
+      <input type="email" id="chat-email" placeholder="Seu e-mail (opcional)" />
+      <button type="submit">Enviar</button>
+      <div id="chat-status"></div>
+    </form>
+  </div>
+</div>
+
 </body>
 </html>

@@ -230,3 +230,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadNewsCards();
 });
+
+// Chat de Sugestões - EmailJS
+(function() {
+  const openBtn = document.getElementById('open-chat-btn');
+  const closeBtn = document.getElementById('close-chat-btn');
+  const modal = document.getElementById('suggestion-chat-modal');
+  const form = document.getElementById('suggestion-chat-form');
+  const status = document.getElementById('chat-status');
+
+  openBtn.onclick = () => modal.classList.add('open');
+  closeBtn.onclick = () => modal.classList.remove('open');
+
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    status.textContent = 'Enviando...';
+    // Substitua pelos seus IDs do EmailJS:
+    emailjs.send('service_svqj01e', 'SEU_TEMPLATE_ID', {
+      message: document.getElementById('chat-message').value,
+      email: document.getElementById('chat-email').value
+    }, 'SEU_USER_ID')
+    .then(function() {
+      status.textContent = 'Mensagem enviada com sucesso!';
+      form.reset();
+      setTimeout(() => modal.classList.remove('open'), 1500);
+    }, function(error) {
+      status.textContent = 'Erro ao enviar. Tente novamente.';
+    });
+  };
+})();
