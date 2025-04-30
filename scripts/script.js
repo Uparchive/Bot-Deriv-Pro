@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     emailjs.send('service_svqj01e', 'template_ndu28di', {
       message: document.getElementById('chat-message').value,
       email: document.getElementById('chat-email').value
-    }, 'service_svqj01e')
+    }, 'PHQMkhPHUn4nfrTr4')
     .then(function() {
       status.textContent = 'Mensagem enviada com sucesso!';
       form.reset();
