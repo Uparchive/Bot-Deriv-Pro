@@ -246,10 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     status.textContent = 'Enviando...';
     // Substitua pelos seus IDs do EmailJS:
-    emailjs.send('service_svqj01e', 'SEU_TEMPLATE_ID', {
+    emailjs.send('service_svqj01e', 'template_ndu28di', {
       message: document.getElementById('chat-message').value,
       email: document.getElementById('chat-email').value
-    }, 'SEU_USER_ID')
+    }, 'service_svqj01e')
     .then(function() {
       status.textContent = 'Mensagem enviada com sucesso!';
       form.reset();
