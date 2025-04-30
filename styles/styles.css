@@ -515,3 +515,37 @@ footer {
     padding: 1rem 0.7rem;
   }
 }
+
+/* Modal de status do chat centralizado */
+.chat-status-modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+}
+.chat-status-modal.active {
+  display: flex;
+}
+.chat-status-modal-content {
+  background: #23272f;
+  color: #4CAF50;
+  padding: 2rem 1.5rem;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  text-align: center;
+  box-shadow: 0 4px 32px rgba(30,136,229,0.18);
+  max-width: 90vw;
+}
+@media (max-width: 600px) {
+  .chat-status-modal-content {
+    font-size: 1.05rem;
+    padding: 1.5rem 1rem;
+    max-width: 95vw;
+  }
+}

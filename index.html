@@ -52,11 +52,11 @@
     <p id="no-results" class="no-results" hidden>Nenhum vídeo encontrado.</p>
     <div id="summary" class="summary" hidden></div>
 
-    <!-- Seção de Banca REAL -->
+    <!-- Seção Linha do Tempo -->
     <section class="video-section" data-type="real">
       <header class="video-section-header">
         <button class="toggle-btn" aria-expanded="false">▼</button>
-        <h2>Rodando o Robô em Banca Real</h2>
+        <h2>Linha do Tempo</h2>
       </header>
       <ul class="video-list">
         <li class="video-item" data-date="2025-04-29">
@@ -261,6 +261,12 @@
         <span>Sugestões & Dúvidas</span>
         <button id="close-chat-btn" aria-label="Fechar chat">×</button>
       </header>
+
+      <!-- Modal de status do chat -->
+      <div id="chat-status-modal" class="chat-status-modal">
+        <div class="chat-status-modal-content" id="chat-status-modal-content"></div>
+      </div>
+
       <form id="suggestion-chat-form" action="https://formspree.io/f/xgvkoney" method="POST">
         <textarea name="message" id="chat-message" placeholder="Digite sua sugestão ou dúvida..." required></textarea>
         <input type="email" name="email" id="chat-email" placeholder="Seu e-mail (opcional)" />

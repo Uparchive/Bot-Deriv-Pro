@@ -244,7 +244,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.onsubmit = function(e) {
     e.preventDefault();
-    status.textContent = 'Enviando...';
+    const statusModal = document.getElementById('chat-status-modal');
+    const statusModalContent = document.getElementById('chat-status-modal-content');
+    statusModalContent.textContent = 'Enviando...';
+    statusModal.classList.add('active');
     const formData = new FormData(form);
     fetch(form.action, {
       method: 'POST',
@@ -253,15 +256,20 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => {
       if (response.ok) {
-        status.textContent = 'Sua Mensagem foi Enviada com Sucesso!';
+        statusModalContent.textContent = 'Sua Mensagem foi Enviada com Sucesso!';
         form.reset();
-        setTimeout(() => modal.classList.remove('open'), 2000);
+        setTimeout(() => {
+          statusModal.classList.remove('active');
+          modal.classList.remove('open');
+        }, 2000);
       } else {
-        status.textContent = 'Erro ao enviar. Tente novamente.';
+        statusModalContent.textContent = 'Erro ao enviar. Tente novamente.';
+        setTimeout(() => statusModal.classList.remove('active'), 2000);
       }
     })
     .catch(() => {
-      status.textContent = 'Erro ao enviar. Tente novamente.';
+      statusModalContent.textContent = 'Erro ao enviar. Tente novamente.';
+      setTimeout(() => statusModal.classList.remove('active'), 2000);
     });
   };
 })();
