@@ -1,0 +1,101 @@
+body.post-body {
+  background: #161616;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  background: #23272f;
+  border-radius: 24px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.08rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(30,136,229,0.10);
+  border: 1px solid #23272f;
+  margin: 0 auto 1.5rem auto;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  width: fit-content;
+}
+.back-link:hover {
+  background: #1E88E5;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(30,136,229,0.18);
+  text-decoration: none;
+}
+.post-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1B1B1B;
+  padding: 2rem 1rem 1rem 1rem;
+  border-bottom: 1px solid #222;
+}
+.post-header h1 {
+  color: #1E88E5;
+  font-size: 2.1rem;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+.post-date {
+  color: #aaa;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.post-main {
+  max-width: 700px;
+  margin: 2rem auto 2rem auto;
+  background: #202020;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+}
+.post-image {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  background: #222;
+}
+.post-content {
+  font-size: 1.13rem;
+  line-height: 1.7;
+  color: #e0e0e0;
+}
+.post-content h2, .post-content h3 {
+  color: #1E88E5;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.post-content a {
+  color: #4FC3F7;
+  text-decoration: underline;
+  word-break: break-all;
+}
+.post-footer {
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+  padding: 2rem 1rem 1rem 1rem;
+  margin-top: 2rem;
+}
+@media (max-width: 600px) {
+  .back-link {
+    font-size: 0.98rem;
+    padding: 0.45rem 0.8rem;
+  }
+  .post-header h1 {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 800px) {
+  .post-main {
+    padding: 1.2rem 0.5rem 2rem 0.5rem;
+  }
+}

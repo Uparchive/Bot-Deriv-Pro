@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Bot Deriv Pro &mdash; Progresso Diário</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles/styles.css"/>
 </head>
 <body>
   <header>
@@ -40,10 +40,10 @@
         min="2025-04-20"
       />
     </div>
-    <select id="account-filter" aria-label="Filtrar por tipo de conta">
-      <option value="">Todas as contas</option>
+    <select id="account-filter" aria-label="Filtrar por tipo de conteúdo">
+      <option value="">Todas</option>
       <option value="real">Conta Real</option>
-      <option value="demo">Conta Demo</option>
+      <option value="news">News</option>
     </select>
     <button id="clear-search" aria-label="Limpar filtros">🗑️</button>
   </nav>
@@ -212,29 +212,38 @@
       </ul>
     </section>
 
-    <!-- Seção de Banca DEMO -->
-    <section class="video-section" data-type="demo">
+    <!-- Seção de Notícias (News) -->
+    <section class="video-section" data-type="news">
       <header class="video-section-header">
         <button class="toggle-btn" aria-expanded="false">▼</button>
-        <h2>Rodando o Robô em Banca DEMO</h2>
+        <h2>Boot Deriv Pro News</h2>
       </header>
       <ul class="video-list">
-        <li class="video-item" data-date="2025-04-17">
+        <!-- Exemplo de vídeo de notícia -->
+        <li class="video-item" data-date="2025-04-29">
           <header class="video-item-header">
             <button class="item-toggle-btn" aria-expanded="false">▼</button>
-            <h3>(17/04/2025) - Reajuste na nova versão do app</h3>
+            <h3>(29/04/2025) - Lançamento da área de notícias</h3>
           </header>
           <div class="video-item-content">
             <iframe
-              src="https://uparchive.github.io/uploadgalaxy/embed.html?videoUrl=…17-04-2025.mp4"
+              src="https://www.youtube.com/embed/SEU_VIDEO_AQUI"
               allowfullscreen
             ></iframe>
             <p class="video-description">
-              Atualização da geração de relatórios em PDF
+              Agora você acompanha todas as novidades, atualizações e notícias do Boot Deriv Pro nesta seção!
             </p>
           </div>
         </li>
       </ul>
+    </section>
+
+    <!-- Cards de Notícias Recentes -->
+    <section class="news-cards-section">
+      <h2>Notícias Recentes</h2>
+      <div class="news-cards-list" id="news-cards-list">
+        <!-- Os cards serão gerados automaticamente por script.js -->
+      </div>
     </section>
   </main>
 
@@ -244,6 +253,6 @@
     &copy; 2025 Bot Deriv Pro &mdash; Desenvolvido por Kell Shalom
   </footer>
 
-  <script src="script.js" defer></script>
+  <script src="scripts/script.js" defer></script>
 </body>
 </html>
