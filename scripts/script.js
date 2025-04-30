@@ -5,6 +5,13 @@ function loadNewsCards() {
   // Lista manual dos posts (pode ser automatizada via backend futuramente)
   const posts = [
     {
+      file: 'posts/post-prejuizo-29-04-25.html',
+      title: 'Prejuízo na Operação do Dia 29/04/2025',
+      desc: 'Resumo da operação do dia 29/04: começamos à meia-noite, mas após 13 minutos tivemos prejuízo. Veja detalhes e baixe o relatório em PDF.',
+      date: '29/04/2025',
+      img: 'img/prejuizo-dia-29-capa.jpg'
+    },
+    {
       file: 'posts/post1.html',
       title: 'Bem-vindo ao Bot Deriv Pro: O que é e para que serve?',
       desc: 'Descubra o propósito do site, como acompanhar resultados, novidades e tudo sobre o Bot Deriv Pro.',
@@ -20,15 +27,18 @@ function loadNewsCards() {
   const list = document.getElementById('news-cards-list');
   list.innerHTML = '';
   posts.slice(0, 5).forEach(post => {
-    const card = document.createElement('div');
+    const card = document.createElement('a');
     card.className = 'news-card';
+    card.href = post.file;
+    card.style.textDecoration = 'none';
+    card.tabIndex = 0;
     card.innerHTML = `
       <img src="${post.img}" alt="${post.title}" class="news-card-img"/>
       <div class="news-card-content">
         <h3 class="news-card-title">${post.title}</h3>
         <p class="news-card-desc">${post.desc}</p>
         <span class="news-card-date">${post.date}</span>
-        <a href="${post.file}" class="news-card-link">Leia mais</a>
+        <span class="news-card-link">Leia mais</span>
       </div>
     `;
     list.appendChild(card);
@@ -273,3 +283,78 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 })();
+
+// MODAL DE TODOS OS POSTS
+const allPostsModal = document.getElementById('all-posts-modal');
+const openAllPostsModalBtn = document.getElementById('open-all-posts-modal');
+const closeAllPostsModalBtn = document.getElementById('close-all-posts-modal');
+const modalPostsSearchInput = document.getElementById('modal-posts-search-input');
+const modalAllPostsList = document.getElementById('modal-all-posts-list');
+const modalNoPostsFound = document.getElementById('modal-no-posts-found');
+
+const postsData = [
+  {
+    file: 'posts/post-prejuizo-29-04-25.html',
+    title: 'Prejuízo na Operação do Dia 29/04/2025',
+    desc: 'Resumo da operação do dia 29/04: começamos à meia-noite, mas após 13 minutos tivemos prejuízo. Veja detalhes e baixe o relatório em PDF.',
+    date: '29/04/2025',
+    img: 'img/prejuizo-dia-29-capa.jpg'
+  },
+  {
+    file: 'posts/post1.html',
+    title: 'Bem-vindo ao Bot Deriv Pro: O que é e para que serve?',
+    desc: 'Descubra o propósito do site, como acompanhar resultados, novidades e tudo sobre o Bot Deriv Pro.',
+    date: '29/04/2025',
+    img: 'img/botposter.png'
+  }
+  // Adicione novos posts aqui seguindo o mesmo padrão
+];
+
+function renderModalPosts(filteredPosts) {
+  modalAllPostsList.innerHTML = '';
+  if (!filteredPosts.length) {
+    modalNoPostsFound.hidden = false;
+    return;
+  }
+  modalNoPostsFound.hidden = true;
+  filteredPosts.forEach(post => {
+    const card = document.createElement('div');
+    card.className = 'news-card';
+    card.innerHTML = `
+      <img src="${post.img}" alt="${post.title}" class="news-card-img"/>
+      <div class="news-card-content">
+        <h3 class="news-card-title">${post.title}</h3>
+        <p class="news-card-desc">${post.desc}</p>
+        <span class="news-card-date">${post.date}</span>
+        <a href="${post.file}" class="news-card-link" target="_blank">Leia mais</a>
+      </div>
+    `;
+    modalAllPostsList.appendChild(card);
+  });
+}
+
+function filterModalPosts() {
+  const query = modalPostsSearchInput.value.trim().toLowerCase();
+  if (!query) {
+    renderModalPosts(postsData);
+    return;
+  }
+  const filtered = postsData.filter(post =>
+    post.title.toLowerCase().includes(query) ||
+    post.desc.toLowerCase().includes(query)
+  );
+  renderModalPosts(filtered);
+}
+
+openAllPostsModalBtn.addEventListener('click', () => {
+  allPostsModal.classList.add('active');
+  renderModalPosts(postsData);
+  modalPostsSearchInput.value = '';
+});
+closeAllPostsModalBtn.addEventListener('click', () => {
+  allPostsModal.classList.remove('active');
+});
+modalPostsSearchInput.addEventListener('input', filterModalPosts);
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') allPostsModal.classList.remove('active');
+});
